@@ -1,0 +1,108 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: ** sch_path: /home/tare/desktop/analog design/sar_logic_tb.sch
+
+
+Note: No compatibility mode selected!
+
+binary raw file "SAR_Logic_tb.raw"
+binary raw file "/home/tare/Desktop/Analog design/simulation/SAR_Logic_tb.raw"
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+No. of Data Columns : 17  
+Warning: singular matrix:  check node dw0
+
+Note: Starting dynamic gmin stepping
+Trying gmin =   1.0000E-03 Note: One successful gmin step
+Trying gmin =   1.0000E-04 Note: One successful gmin step
+Trying gmin =   1.0000E-05 Note: One successful gmin step
+Trying gmin =   1.0000E-06 Note: One successful gmin step
+Trying gmin =   1.0000E-07 Note: One successful gmin step
+Trying gmin =   1.0000E-08 Note: One successful gmin step
+Trying gmin =   1.0000E-09 Note: One successful gmin step
+Trying gmin =   1.0000E-10 Note: One successful gmin step
+Trying gmin =   1.0000E-11 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Warning: singular matrix:  check node dw0
+
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Trying gmin =   1.0000E-03 Warning: singular matrix:  check node dw0
+
+Warning: Further gmin increment
+Trying gmin =   5.6234E-03 Warning: singular matrix:  check node dw0
+
+Warning: Further gmin increment
+Trying gmin =   8.6596E-03 Warning: singular matrix:  check node dw0
+
+Warning: Further gmin increment
+Trying gmin =   9.6466E-03 Warning: singular matrix:  check node dw0
+
+Warning: Further gmin increment
+Trying gmin =   9.9105E-03 Warning: Further gmin increment
+Trying gmin =   9.9775E-03 Warning: Further gmin increment
+Trying gmin =   9.9944E-03 Warning: Further gmin increment
+Trying gmin =   9.9986E-03 Warning: Further gmin increment
+Trying gmin =   9.9996E-03 Warning: Last gmin step failed
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Supplies reduced to   0.0000% 
+Trying gmin =   1.0000E-02 Note: One successful gmin step
+Trying gmin =   1.0000E-03 Note: One successful gmin step
+Trying gmin =   1.0000E-04 Note: One successful gmin step
+Trying gmin =   1.0000E-05 Note: One successful gmin step
+Trying gmin =   1.0000E-06 Note: One successful gmin step
+Trying gmin =   1.0000E-07 Note: One successful gmin step
+Trying gmin =   1.0000E-08 Note: One successful gmin step
+Trying gmin =   1.0000E-09 Note: One successful gmin step
+Trying gmin =   1.0000E-10 Note: One successful gmin step
+Trying gmin =   1.0000E-11 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Note: One successful source step
+Supplies reduced to   0.1000% Supplies reduced to   0.0000% Warning: source stepping failed
+Note: Transient op started
+Note: Transient op finished successfully
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+smpl                                         0
+cmp                                          2
+clk                                          0
+dw0                                          0
+dw1                                          0
+dw2                                          0
+dw3                                          0
+dw4                                          0
+dw5                                          0
+dw6                                          0
+dw7                                          1
+eoc                                          0
+v3#branch                                    0
+v2#branch                                    0
+v1#branch                                    0
+auto_dac4#branch_1_0                         0
+
+
+No. of Data Rows : 2173
+
+Total analysis time (seconds) = 0.069
+
+Total elapsed time (seconds) = 0.074 
+
+Total DRAM available = 7902.488 MB.
+DRAM currently available = 5436.062 MB.
+Maximum ngspice program size =   25.555 MB.
+Current ngspice program size =   11.527 MB.
+
+Shared ngspice pages =    9.695 MB.
+Text (code) pages =    5.387 MB.
+Stack = 0 bytes.
+Library pages =    2.168 MB.
+

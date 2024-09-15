@@ -1,0 +1,42 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: ** sch_path: /home/tare/desktop/analog design/inv_tb.sch
+
+
+Note: No compatibility mode selected!
+
+binary raw file "/home/tare/Desktop/Analog design/simulation/inv_tb.raw"
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+No. of Data Columns : 5  
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+a                                            0
+y                                            2
+v1#branch                                    0
+auto_dac3#branch_1_0                         0
+
+
+No. of Data Rows : 5343
+
+Total analysis time (seconds) = 0.053
+
+Total elapsed time (seconds) = 0.072 
+
+Total DRAM available = 7902.477 MB.
+DRAM currently available = 6184.863 MB.
+Maximum ngspice program size =   25.402 MB.
+Current ngspice program size =   11.660 MB.
+
+Shared ngspice pages =    9.828 MB.
+Text (code) pages =    5.387 MB.
+Stack = 0 bytes.
+Library pages =    2.016 MB.
+

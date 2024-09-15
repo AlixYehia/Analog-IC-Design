@@ -1,0 +1,221 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: ** sch_path: /home/tare/desktop/analog design/sar_tb.sch
+
+
+Note: No compatibility mode selected!
+
+binary raw file "/home/tare/Desktop/Analog design/simulation/SAR_tb.raw"
+Reducing trtol to 1 for xspice 'A' devices
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+No. of Data Columns : 131  
+Warning: singular matrix:  check node x1.smpl_b
+
+Note: Starting dynamic gmin stepping
+Trying gmin =   1.0000E-03 Note: One successful gmin step
+Trying gmin =   1.0000E-04 Note: One successful gmin step
+Trying gmin =   1.0000E-05 Note: One successful gmin step
+Trying gmin =   1.0000E-06 Note: One successful gmin step
+Trying gmin =   1.0000E-07 Note: One successful gmin step
+Trying gmin =   1.0000E-08 Note: One successful gmin step
+Trying gmin =   1.0000E-09 Note: One successful gmin step
+Trying gmin =   1.0000E-10 Note: One successful gmin step
+Trying gmin =   1.0000E-11 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Warning: singular matrix:  check node x1.smpl_b
+
+Warning: Dynamic gmin stepping failed
+Note: Starting true gmin stepping
+Trying gmin =   1.0000E-03 Warning: singular matrix:  check node x1.smpl_b
+
+Warning: Further gmin increment
+Trying gmin =   5.6234E-03 Warning: singular matrix:  check node x1.smpl_b
+
+Warning: Further gmin increment
+Trying gmin =   8.6596E-03 Warning: singular matrix:  check node x1.smpl_b
+
+Warning: Further gmin increment
+Trying gmin =   9.6466E-03 Warning: singular matrix:  check node x1.smpl_b
+
+Warning: Further gmin increment
+Trying gmin =   9.9105E-03 Warning: Further gmin increment
+Trying gmin =   9.9775E-03 Warning: Further gmin increment
+Trying gmin =   9.9944E-03 Warning: Further gmin increment
+Trying gmin =   9.9986E-03 Warning: Further gmin increment
+Trying gmin =   9.9996E-03 Warning: Last gmin step failed
+Warning: True gmin stepping failed
+Note: Starting source stepping
+Supplies reduced to   0.0000% 
+Trying gmin =   1.0000E-02 Note: One successful gmin step
+Trying gmin =   1.0000E-03 Note: One successful gmin step
+Trying gmin =   1.0000E-04 Note: One successful gmin step
+Trying gmin =   1.0000E-05 Note: One successful gmin step
+Trying gmin =   1.0000E-06 Note: One successful gmin step
+Trying gmin =   1.0000E-07 Note: One successful gmin step
+Trying gmin =   1.0000E-08 Note: One successful gmin step
+Trying gmin =   1.0000E-09 Note: One successful gmin step
+Trying gmin =   1.0000E-10 Note: One successful gmin step
+Trying gmin =   1.0000E-11 Note: One successful gmin step
+Trying gmin =   1.0000E-12 Note: One successful gmin step
+Note: One successful source step
+Supplies reduced to   0.1000% Supplies reduced to   0.0000% Warning: source stepping failed
+Note: Transient op started
+Note: Transient op finished successfully
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+x2.x1.net1                                   1
+x2.bo9                                   1e-12
+dw7                                          0
+x2.vth                                0.999999
+x2.x2.net1                                   1
+x2.bo8                                   1e-12
+dw6                                          0
+x2.x3.net1                                   1
+x2.bo7                                   1e-12
+dw5                                          0
+x2.x4.net1                                   1
+x2.bo6                                   1e-12
+dw4                                          0
+x2.x5.net1                                   1
+x2.bo5                                   1e-12
+dw3                                          0
+x2.x6.net1                                   1
+x2.bo4                                   1e-12
+dw2                                          0
+x2.x7.net1                                   1
+x2.bo3                                   1e-12
+dw1                                          0
+x2.x8.net1                                   1
+x2.bo2                                   1e-12
+dw0                                          0
+x2.x9.net1                                   1
+x2.bo1                                   1e-12
+x2.x10.net1                                  1
+x2.bo0                                   1e-12
+vdd                                          2
+vdac                                       0.5
+vrefp                                      1.5
+vrefn                                      0.5
+x3.net1                                    0.5
+voutsh                                    0.25
+x3.net3                                   0.25
+x3.net2                                   0.25
+x3.net4                                   0.25
+vcm                                          1
+vout                                         1
+net1                                         0
+clk                                          0
+smpl                                         0
+vin_dc                                     0.7
+vin                                          1
+vin_sin                                      1
+x1.x2.net1                            0.500424
+x1.x2.x1.net1                                1
+x1.x2.x1.net2                                1
+x1.smpl_d                                    0
+x1.smpl_b                             0.979967
+x1.vdac                               0.400517
+x1.x2.net2                             0.50079
+x1.x2.x2.net1                                1
+x1.x2.x2.net2                                1
+x1.x2.net3                            0.500781
+x1.x2.x3.net1                                1
+x1.x2.x3.net2                                1
+x1.x2.net8                            0.499992
+x1.x2.x4.net1                                1
+x1.x2.x4.net2                                2
+x1.x2.net4                            0.500847
+x1.x2.x5.net1                                1
+x1.x2.x5.net2                                1
+x1.x2.net5                             0.50059
+x1.x2.x6.net1                                1
+x1.x2.x6.net2                                1
+x1.x2.net6                            0.501295
+x1.x2.x7.net1                                1
+x1.x2.x7.net2                                1
+x1.x2.net9                            0.500814
+x1.x2.x8.net1                                1
+x1.x2.x8.net2                                1
+x1.x2.net7                            0.501142
+x1.x2.x9.net1                                1
+x1.x2.x9.net2                                1
+eoc                                          0
+x1.x8.vinni                           0.400517
+x1.x8.vinpi                                  1
+x1.x8.net2                                   2
+x1.x8.net1                                   0
+x1.smpl_b_d                                  1
+x1.clk_b                                     0
+b.x1.x8.b2#branch                            0
+b.x1.x8.b1#branch                            0
+b.x2.b1#branch                               0
+e.x3.e3#branch                    -2.50022e-13
+e.x3.e2#branch                               0
+e.x3.e1#branch                        -2.5e-13
+v.x1.x8.v2#branch                            0
+v.x1.x8.v1#branch                            0
+v9#branch                         -1.79821e-11
+v8#branch                         -1.79821e-11
+v7#branch                                    0
+v6#branch                                    0
+v5#branch                                    0
+v4#branch                          -1.9984e-12
+v3#branch                          7.64934e-10
+v2#branch                         -7.87447e-10
+v1#branch                         -1.00004e-06
+v.x2.x10.v1#branch                      -1e-12
+v.x2.x9.v1#branch                       -1e-12
+v.x2.x8.v1#branch                       -1e-12
+v.x2.x7.v1#branch                       -1e-12
+v.x2.x6.v1#branch                       -1e-12
+v.x2.x5.v1#branch                       -1e-12
+v.x2.x4.v1#branch                       -1e-12
+v.x2.x3.v1#branch                       -1e-12
+v.x2.x2.v1#branch                       -1e-12
+v.x2.x1.v1#branch                       -1e-12
+auto_dac5#branch_1_0                         0
+auto_dac5#branch_1_1                         0
+auto_dac4#branch_1_0                         0
+auto_dac4#branch_1_1                         0
+auto_dac4#branch_1_2                         0
+auto_dac4#branch_1_3                         0
+auto_dac4#branch_1_4                         0
+auto_dac4#branch_1_5                         0
+auto_dac4#branch_1_6                         0
+auto_dac4#branch_1_7                         0
+auto_dac4#branch_1_8                         0
+auto_dac4#branch_1_9                         0
+auto_dac4#branch_1_10                        0
+auto_dac4#branch_1_11                        0
+auto_dac4#branch_1_12                        0
+auto_dac4#branch_1_13                        0
+auto_dac4#branch_1_14                        0
+auto_dac4#branch_1_15                        0
+auto_dac4#branch_1_16                        0
+auto_dac4#branch_1_17                        0
+
+
+No. of Data Rows : 418759
+
+Total analysis time (seconds) = 200.441
+
+Total elapsed time (seconds) = 200.578 
+
+Total DRAM available = 7902.441 MB.
+DRAM currently available = 5123.531 MB.
+Maximum ngspice program size =   45.848 MB.
+Current ngspice program size =   24.258 MB.
+
+Shared ngspice pages =    9.977 MB.
+Text (code) pages =    5.387 MB.
+Stack = 0 bytes.
+Library pages =   22.457 MB.
+

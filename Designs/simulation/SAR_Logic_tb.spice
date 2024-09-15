@@ -1,0 +1,92 @@
+** sch_path: /home/tare/Desktop/Analog design/SAR_Logic_tb.sch
+**.subckt SAR_Logic_tb
+x1 CMP CLK EOC SMPL DW0 DW_B0 DW1 DW_B1 DW_B2 DW2 DW3 DW_B3 DW4 DW_B4 DW5 DW_B5 DW6 DW_B6 DW7 DW_B7
++ SAR_Logic
+V1 SMPL GND pulse 0 {VDD} {Tdel+TRF} {TRF} {TRF} {TCLK} {TS}
+.save i(v1)
+V2 CMP GND pulse VDD VDD {Tdel+2*TRF} {TRF} {TRF} {TCLK} {2*TCLK}
+.save i(v2)
+V3 CLK GND pulse 0 {VDD} {Tdel+2*TRF} {TRF} {TRF} {0.5*TCLK} {TCLK}
+.save i(v3)
+C1 DW0 GND 10f m=1
+C2 DW1 GND 10f m=1
+C3 DW2 GND 10f m=1
+C4 DW3 GND 10f m=1
+C5 DW4 GND 10f m=1
+C6 DW5 GND 10f m=1
+C7 DW6 GND 10f m=1
+C8 DW7 GND 10f m=1
+C9 EOC GND 10f m=1
+**** begin user architecture code
+
+
+.param vcc=VDD
+.param CU=20f CP=5p
+.param Tdel=50n TRF=100p TCLK=100n TS=1u
+.param VDD =2
+.param TSTOP=4*TS TDROP=TS
+.tran 25n {TSTOP} {TDROP}
+.save all
+.control
+write SAR_Logic_tb.raw
+.endc
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/SAR_Logic.sym # of pins=20
+** sym_path: /home/tare/Desktop/Analog design/SAR_Logic.sym
+** sch_path: /home/tare/Desktop/Analog design/SAR_Logic.sch
+.subckt SAR_Logic CMP CLK EOC RST DW0 DW_B0 DW1 DW_B1 DW_B2 DW2 DW3 DW_B3 DW4 DW_B4 DW5 DW_B5 DW6
++ DW_B6 DW7 DW_B7
+*.iopin DW0
+*.iopin DW1
+*.iopin DW2
+*.iopin DW3
+*.iopin DW4
+*.iopin DW5
+*.iopin DW6
+*.iopin DW7
+*.iopin DW_B0
+*.iopin DW_B1
+*.iopin DW_B2
+*.iopin DW_B3
+*.iopin DW_B4
+*.iopin DW_B5
+*.iopin DW_B6
+*.iopin DW_B7
+*.iopin CMP
+*.iopin CLK
+*.iopin RST
+*.iopin EOC
+**** begin user architecture code
+
+
+a1 0 CLK RST 0 QCNT8 QCNT_B8 flop1
+a2 QCNT8 CLK 0 RST QCNT7 QCNT_B7 flop1
+a3 QCNT7 CLK 0 RST QCNT6 QCNT_B6 flop1
+a4 QCNT6 CLK 0 RST QCNT5 QCNT_B5 flop1
+a5 QCNT5 CLK 0 RST QCNT4 QCNT_B4 flop1
+a6 QCNT4 CLK 0 RST QCNT3 QCNT_B3 flop1
+a7 QCNT3 CLK 0 RST QCNT2 QCNT_B2 flop1
+a8 QCNT2 CLK 0 RST QCNT1 QCNT_B1 flop1
+a9 QCNT1 CLK 0 RST QCNT0 QCNT_B0 flop1
+a10 CMP DW6 QCNT8 0 DW7 DW_B7 flop1
+a11 CMP DW5 QCNT7 RST DW6 DW_B6 flop1
+a12 CMP DW4 QCNT6 RST DW5 DW_B5 flop1
+a13 CMP DW3 QCNT5 RST DW4 DW_B4 flop1
+a14 CMP DW2 QCNT4 RST DW3 DW_B3 flop1
+a15 CMP DW1 QCNT3 RST DW2 DW_B2 flop1
+a16 CMP DW0 QCNT2 RST DW1 DW_B1 flop1
+a17 CMP EOC QCNT1 RST DW0 DW_B0 flop1
+a18 0 0 QCNT0 RST EOC NOOP flop1
+.model flop1 d_dff(clk_delay = 10e-9 set_delay = 100e-12  reset_delay = 100e-12 ic =1.8 rise_delay =
++ 100e-12  fall_delay = 100e-12)
+
+
+**** end user architecture code
+.ends
+
+.GLOBAL GND
+.end

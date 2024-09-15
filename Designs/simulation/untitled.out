@@ -1,0 +1,12 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: ** sch_path: /home/tare/desktop/analog design/untitled.sch
+
+Error on line 28 or its substitute:
+  a1 a y x nand
+Missing [, an array connection was expected
+    Simulation interrupted due to error!
+
+Missing [, an array connection was expected.  Returning . . .

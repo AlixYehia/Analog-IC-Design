@@ -1,0 +1,17 @@
+** sch_path: /home/tare/Desktop/Analog design/my_first_schematic.sch
+**.subckt my_first_schematic
+V1 VIN GND pulse(0 1 0 100p 100p 5n 10n)
+.save i(v1)
+C1 VOUT GND 1p m=1
+R1 VOUT VIN 1k m=1
+**** begin user architecture code
+
+
+.tran 10p 50n
+.save all
+
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

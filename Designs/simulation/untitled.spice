@@ -1,0 +1,35 @@
+** sch_path: /home/tare/Desktop/Analog design/untitled.sch
+**.subckt untitled
+V1 A GND pulse(0 VDD 0 TRF TRF {TCLK/2} TCLK)
+.save i(v1)
+C1 Y GND 100f m=1
+V2 X GND pulse(0 VDD 0 TRF TRF {TCLK/4} {TCLK/2})
+.save i(v2)
+**** begin user architecture code
+
+
+
+*These are the values of the parameters to be used
+.param VDD=2 VCC=VDD
+.param TRF=1n TCLK=100n
+.param TSTOP={5*TCLK} TDROP=0
+*Analysis setup and control statements
+.tran 100p {TSTOP} {TDROP}
+*save all voltages and currents
+.save all
+*options for an accurate precision output
+.options reltol=1e-6 vntol=1u abstol=1p
+* option to make output file ascii
+*.options filetype=ascii
+
+
+
+
+a1 A Y X nand
+.model nand d_nand(rise_delay = 0.5e-9 fall_delay = 0.5e-9  input_load = 0.1e-12)
+
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

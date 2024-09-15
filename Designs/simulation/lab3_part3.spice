@@ -1,0 +1,110 @@
+** sch_path: /home/tare/Desktop/Analog design/lab3_part3.sch
+**.subckt lab3_part3
+E1 net2 GND VYP GND 1
+S1 VSHP net2 net3 GND SWITCH1
+C2 VSHP GND {CH} m=1
+V1 GND net3 pulse(0 {VDD} {0.5*TS} {TRF} {TRF} {TON} {TS})
+.save i(v1)
+V2 net1 GND pulse(0 {VDD} 0 {TRF} {TRF} {TON} {TS})
+.save i(v2)
+x1 net1 GND VINP VXP VDD tag_new W_N=10u L_N=0.18u W_P=10u L_P=0.18u
+C3 GND VXP {CP} m=1
+M2 VXP CLK4 VCM VSS nmos w=10u l=0.18u m=1
+C1 VXP VYP {CH} m=1
+C4 GND VYP {CP} m=1
+M1 VYP CLK3 VCM VSS nmos w=10u l=0.18u m=1
+E2 net4 GND VYN GND 1
+S2 VSHN net4 CLK2 GND SWITCH1
+C5 VSHN GND {CH} m=1
+V3 GND CLK2 pulse(0 {VDD} {0.5*TS} {TRF} {TRF} {TON} {TS})
+.save i(v3)
+V4 CLK1 GND pulse(0 {VDD} 0 {TRF} {TRF} {TON} {TS})
+.save i(v4)
+x2 CLK1 GND VINN VXN VDD tag_new W_N=10u L_N=0.18u W_P=10u L_P=0.18u
+C6 GND VXN {CP} m=1
+M3 VXN CLK4 VCM VSS nmos w=10u l=0.18u m=1
+C7 VXN VYN {CH} m=1
+C8 GND VYN {CP} m=1
+M4 VYN CLK3 VCM VSS nmos w=10u l=0.18u m=1
+x3 VINP VCM VINN net5 balun
+R1 net5 VSIG {RSIG} m=1
+V5 VSIG GND sin(0 {2*VPK} {FIN})
+.save i(v5)
+V6 VDD GND {VDD}
+.save i(v6)
+V7 CLK3 GND pulse(0 {VDD} 0 {TRF} {TRF} {0.9*TON} {TS})
+.save i(v7)
+V8 CLK4 GND pulse({VDD} 0 0 {TRF} {TRF} {1.1*TON} {TS})
+.save i(v8)
+V9 VCM GND {VCM}
+.save i(v9)
+E3 VSHCM GND net6 GND 3
+E4 net6 VSHN VSHP GND 3
+E5 VSH GND VSHP VSHN 3
+**** begin user architecture code
+
+.include /home/tare/pdk/gf180mcuC/libs.tech/ngspice/design.ngspice
+.lib /home/tare/pdk/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
+
+
+
+
+
+*These are the values of the parameters to be used
+.param TS=1u
+.param CH=1p CP={0.1*CH} RSIG=1k TON={0.4*TS} TRF=1n NCYC=5 NFFT=256 FIN={(NCYC/NFFT)/TS}
+.param VDD=2 VDC={VDD/2} VCM={VDD/2} VPK={VDD/4} TDROP={0.5/FIN} TSTOP={(NCYC/FIN)+TDROP}
+.param W_N=10u L_N=0.28u W_P=10u L_P=0.28u
+
+*Analysis setup and control statements
+.tran 25n {TSTOP} {TDROP}
+.options filetype=ascii
+*.options reltol=0.1u vntol=0.11u abstol=1p
+
+*Required model for the switch
+.model SWITCH1 sw vt={VDD/2}
+
+.model nmos nmos
+
+*save all voltages and currents
+.save all
+
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/tag_new.sym # of pins=5
+** sym_path: /home/tare/Desktop/Analog design/tag_new.sym
+** sch_path: /home/tare/Desktop/Analog design/tag_new.sch
+.subckt tag_new C GND A B VDD  W_N=10u L_N=0.18u W_P=10u L_P=0.18u
+*.iopin B
+*.iopin GND
+*.iopin A
+*.iopin VDD
+*.iopin C
+E1 net1 VDD C GND -1
+XM3 B C A GND nmos_3p3_sab L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM1 B net1 A VDD pmos_3p3_sab L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/balun.sym # of pins=4
+** sym_path: /home/tare/Desktop/Analog design/balun.sym
+** sch_path: /home/tare/Desktop/Analog design/balun.sch
+.subckt balun VP VCM VID VN
+*.iopin VP
+*.iopin VCM
+*.iopin VN
+*.iopin VID
+E2 VP VCM net1 GND 0.5
+E3 VN VCM net1 GND -0.5
+E1 net1 GND VID GND 1
+.ends
+
+.GLOBAL GND
+.end

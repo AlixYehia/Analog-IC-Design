@@ -1,0 +1,416 @@
+** sch_path: /home/tare/Desktop/Analog design/SAR_tb.sch
+**.subckt SAR_tb
+x2 VREFP VDD VDAC DW3 DW2 DW6 GND DW4 GND DW0 DW1 DW5 DW7 VREFN DAC_10
+x3 VCM VOUT VOUTSH VDAC Ideal_S_H
+x4 SMPL VOUT net1 NOR TRF=100p
+x5 EOC net1 INV TRF=100p
+V1 VDD GND {VDD}
+.save i(v1)
+V2 VREFP GND {VREFP}
+.save i(v2)
+V3 VREFN GND {VREFN}
+.save i(v3)
+V4 VCM GND {VCM}
+.save i(v4)
+V5 CLK GND pulse 0 {VDD} {Tdel+2*TRF} {TRF} {TRF} {0.5*TCLK} {TCLK}
+.save i(v5)
+V6 SMPL GND pulse 0 {VDD} {Tdel+TRF} {TRF} {TRF} {TCLK} {TS}
+.save i(v6)
+V7 VIN_DC GND {VDC}
+.save i(v7)
+V8 VIN VIN_SIN 0
+.save i(v8)
+V9 VIN_SIN GND sin {VCM} {VREFN} {FIN}
+.save i(v9)
+x1 VDD VIN_DC DW0 DW4 VREFP GND DW5 DW1 CLK VREFN VCM DW2 SMPL VDD DW6 DW3 DW7 GND EOC 8BIT_SAR_ADC
+**** begin user architecture code
+
+
+.param vcc=VDD
+*.options filetype=ascii
+.param CU=20f CP=5p
+.param Tdel=50n TRF=100p TCLK=100n NBIT=8 TS=1u
+.param VDD =2 VREFP=0.75*VDD VREFN=0.25*VDD VCM=(VREFP+VREFN)/2
+.param VDC=0.7
+****DC_simulation****
+.param TSTOP=4*TS TDROP=TS
+****Sine_wave****
+.param NFFT=2**7 NCYC=5 FIN=(NCYC/NFFT)/TS
+*.param TSTOP=(NCYC/FIN)+TDROP TDROP=(0.5/FIN)+0.5*TS
+.tran 50n {TSTOP} {TDROP}
+.save v(VOUTSH) v(VDAC) v(VIN_DC) v(VOUT)
+.save all
+
+*options for an accurate precision output
+.options reltol=1m vntol=1m abstol=1n
+
+
+
+
+.include /home/tare/pdk/gf180mcuC/libs.tech/ngspice/design.ngspice
+.lib /home/tare/pdk/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
+.model SWITCH1 sw vt=0
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/DAC_10.sym # of pins=14
+** sym_path: /home/tare/Desktop/Analog design/DAC_10.sym
+** sch_path: /home/tare/Desktop/Analog design/DAC_10.sch
+.subckt DAC_10 VREFP VDD AOUT B5 B4 B8 B1 B6 B0 B2 B3 B7 B9 VREFN
+*.iopin VDD
+*.iopin B9
+*.iopin B8
+*.iopin B7
+*.iopin B6
+*.iopin B5
+*.iopin B4
+*.iopin B3
+*.iopin B2
+*.iopin B1
+*.iopin B0
+*.iopin VREFP
+*.iopin VREFN
+*.iopin AOUT
+x1 VTH B9 BO9 Bitlogic
+x2 VTH B8 BO8 Bitlogic
+x3 VTH B7 BO7 Bitlogic
+x4 VTH B6 BO6 Bitlogic
+x5 VTH B5 BO5 Bitlogic
+x6 VTH B4 BO4 Bitlogic
+x7 VTH B3 BO3 Bitlogic
+x8 VTH B2 BO2 Bitlogic
+x9 VTH B1 BO1 Bitlogic
+x10 VTH B0 BO0 Bitlogic
+R1 VDD VTH 1000k m=1
+R2 VTH GND 1000k m=1
+B1 AOUT GND
++ v=(512*v(BO9)+256*v(BO8)+128*v(BO7)+64*v(BO6)+32*v(BO5)+16*v(BO4)+8*v(BO3)+4*v(BO2)+2*v(BO1)+v(BO0))*((v(VREFP)-v(VREFN))/1024)+v(VREFN)
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/Ideal_S_H.sym # of pins=4
+** sym_path: /home/tare/Desktop/Analog design/Ideal_S_H.sym
+** sch_path: /home/tare/Desktop/Analog design/Ideal_S_H.sch
+.subckt Ideal_S_H CLK VTH VOUT VIN
+*.iopin CLK
+*.iopin VTH
+*.iopin VIN
+*.iopin VOUT
+E1 net1 GND VIN GND 1
+E2 VOUT GND net3 GND 1
+C1 net2 GND 1e-12 m=1
+C2 net3 GND 1e-12 m=1
+S1 net3 net4 CLK VTH SWITCH1
+S2 net2 net1 VTH CLK SWITCH1
+E3 net4 GND net2 GND 1
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/NOR.sym # of pins=3
+** sym_path: /home/tare/Desktop/Analog design/NOR.sym
+** sch_path: /home/tare/Desktop/Analog design/NOR.sch
+.subckt NOR SMPL VOUT DB  TRF=100p
+*.iopin DB
+*.iopin SMPL
+*.iopin VOUT
+C1 VOUT GND 10f m=1
+**** begin user architecture code
+
+
+anor12 [SMPL DB] VOUT nor12
+.model nor12 d_nor(rise_delay = {TRF} fall_delay = {TRF}  input_load = 0.1e-12)
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/INV.sym # of pins=2
+** sym_path: /home/tare/Desktop/Analog design/INV.sym
+** sch_path: /home/tare/Desktop/Analog design/INV.sch
+.subckt INV in out  TRF=100p
+*.iopin in
+*.iopin out
+C1 out GND 10f m=1
+**** begin user architecture code
+
+
+a6 in out inv1
+.model inv1 d_inverter(rise_delay = {TRF} fall_delay = {TRF}  input_load = 0.1e-12)
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/8BIT_SAR_ADC.sym # of pins=19
+** sym_path: /home/tare/Desktop/Analog design/8BIT_SAR_ADC.sym
+** sch_path: /home/tare/Desktop/Analog design/8BIT_SAR_ADC.sch
+.subckt 8BIT_SAR_ADC AVDD VIN DW0 DW4 VREFP AGND DW5 DW1 CLK VREFN VCM DW2 SMPL DVDD DW6 DW3 DW7
++ DGND EOC
+*.iopin VREFP
+*.iopin VREFN
+*.iopin DVDD
+*.iopin DGND
+*.iopin AVDD
+*.iopin AGND
+*.iopin VCM
+*.ipin VIN
+*.ipin CLK
+*.ipin SMPL
+*.opin DW0
+*.opin DW1
+*.opin DW2
+*.opin DW3
+*.opin DW4
+*.opin DW5
+*.opin DW6
+*.opin DW7
+*.opin EOC
+x1 CMP CLK EOC SMPL DW0 net2 DW1 net3 net4 DW2 DW3 net5 DW4 net6 DW5 net7 DW6 net8 DW7 net9
++ SAR_Logic
+x2 VIN AVDD VREFN SMPL_D VREFP AGND SMPL_B DW7 DW5 DW6 VREFN VDAC DW2 DW1 DW0 DW4 DW3 capacitive_DAC
+C1 DW0 GND 10f m=1
+C2 DW1 GND 10f m=1
+C3 DW2 GND 10f m=1
+C4 DW3 GND 10f m=1
+C5 DW4 GND 10f m=1
+C6 DW5 GND 10f m=1
+C7 DW6 GND 10f m=1
+C8 DW7 GND 10f m=1
+C9 EOC GND 10f m=1
+x3 SMPL_B SMPL_D INV TRF={5*TRF}
+x7 SMPL AGND VDAC VCM AVDD SMPL_B TG
+x8 CMP VCM CLK_B VDAC net1 COMP
+C10 VDAC AGND {CP} m=1
+x6 SMPL_D SMPL_B_D INV TRF={TRF}
+x4 CLK CLK_B INV TRF={TRF}
+x5 SMPL SMPL_B INV TRF={TRF}
+.ends
+
+
+* expanding   symbol:  Bitlogic.sym # of pins=3
+** sym_path: /home/tare/Desktop/Analog design/Bitlogic.sym
+** sch_path: /home/tare/Desktop/Analog design/Bitlogic.sch
+.subckt Bitlogic VTH BX BXL
+*.iopin VTH
+*.iopin BXL
+*.iopin BX
+V1 net1 GND 1
+.save i(v1)
+S1 BXL net1 BX VTH SWITCH1
+S2 GND BXL VTH BX SWITCH1
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/SAR_Logic.sym # of pins=20
+** sym_path: /home/tare/Desktop/Analog design/SAR_Logic.sym
+** sch_path: /home/tare/Desktop/Analog design/SAR_Logic.sch
+.subckt SAR_Logic CMP CLK EOC RST DW0 DW_B0 DW1 DW_B1 DW_B2 DW2 DW3 DW_B3 DW4 DW_B4 DW5 DW_B5 DW6
++ DW_B6 DW7 DW_B7
+*.iopin DW0
+*.iopin DW1
+*.iopin DW2
+*.iopin DW3
+*.iopin DW4
+*.iopin DW5
+*.iopin DW6
+*.iopin DW7
+*.iopin DW_B0
+*.iopin DW_B1
+*.iopin DW_B2
+*.iopin DW_B3
+*.iopin DW_B4
+*.iopin DW_B5
+*.iopin DW_B6
+*.iopin DW_B7
+*.iopin CMP
+*.iopin CLK
+*.iopin RST
+*.iopin EOC
+**** begin user architecture code
+
+
+a1 0 CLK RST 0 QCNT8 QCNT_B8 flop1
+a2 QCNT8 CLK 0 RST QCNT7 QCNT_B7 flop1
+a3 QCNT7 CLK 0 RST QCNT6 QCNT_B6 flop1
+a4 QCNT6 CLK 0 RST QCNT5 QCNT_B5 flop1
+a5 QCNT5 CLK 0 RST QCNT4 QCNT_B4 flop1
+a6 QCNT4 CLK 0 RST QCNT3 QCNT_B3 flop1
+a7 QCNT3 CLK 0 RST QCNT2 QCNT_B2 flop1
+a8 QCNT2 CLK 0 RST QCNT1 QCNT_B1 flop1
+a9 QCNT1 CLK 0 RST QCNT0 QCNT_B0 flop1
+a10 CMP DW6 QCNT8 0 DW7 DW_B7 flop1
+a11 CMP DW5 QCNT7 RST DW6 DW_B6 flop1
+a12 CMP DW4 QCNT6 RST DW5 DW_B5 flop1
+a13 CMP DW3 QCNT5 RST DW4 DW_B4 flop1
+a14 CMP DW2 QCNT4 RST DW3 DW_B3 flop1
+a15 CMP DW1 QCNT3 RST DW2 DW_B2 flop1
+a16 CMP DW0 QCNT2 RST DW1 DW_B1 flop1
+a17 CMP EOC QCNT1 RST DW0 DW_B0 flop1
+a18 0 0 QCNT0 RST EOC NOOP flop1
+.model flop1 d_dff(clk_delay = 10e-9 set_delay = 100e-12  reset_delay = 100e-12 ic =1.8 rise_delay =
++ 100e-12  fall_delay = 100e-12)
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/capacitive_DAC.sym # of pins=17
+** sym_path: /home/tare/Desktop/Analog design/capacitive_DAC.sym
+** sch_path: /home/tare/Desktop/Analog design/capacitive_DAC.sch
+.subckt capacitive_DAC VIN AVDD VREFN SMPL VREFP AGND SMPL_B DW7 DW5 DW6 DUMMY DAC DW2 DW1 DW0 DW4
++ DW3
+*.iopin DW5
+*.iopin DW6
+*.iopin DW7
+*.iopin DUMMY
+*.iopin DW0
+*.iopin DW1
+*.iopin DW2
+*.iopin DW3
+*.iopin DW4
+*.iopin DAC
+*.iopin SMPL
+*.iopin VREFN
+*.iopin SMPL_B
+*.iopin VREFP
+*.iopin AGND
+*.iopin VIN
+*.iopin AVDD
+x1 net1 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW5 bottom_plate
+C1 DAC net1 {CU} m=32
+x2 net2 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW6 bottom_plate
+C2 DAC net2 {CU} m=64
+x3 net3 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW7 bottom_plate
+C3 DAC net3 {CU} m=128
+x4 net8 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DUMMY bottom_plate
+C4 DAC net8 {CU} m=1
+x5 net4 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW0 bottom_plate
+C5 DAC net4 {CU} m=1
+x6 net5 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW1 bottom_plate
+C6 DAC net5 {CU} m=2
+x7 net6 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW2 bottom_plate
+C7 DAC net6 {CU} m=4
+x8 net9 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW3 bottom_plate
+C8 DAC net9 {CU} m=8
+x9 net7 VREFP VREFN AGND AVDD VIN SMPL SMPL_B DW4 bottom_plate
+C9 DAC net7 {CU} m=16
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/TG.sym # of pins=6
+** sym_path: /home/tare/Desktop/Analog design/TG.sym
+** sch_path: /home/tare/Desktop/Analog design/TG.sch
+.subckt TG C AGND OUT SIG AVDD CB
+*.iopin CB
+*.iopin OUT
+*.iopin AVDD
+*.iopin AGND
+*.iopin SIG
+*.iopin C
+XM1 OUT C SIG AGND nmos_3p3 L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 OUT CB SIG AVDD pmos_3p3 L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/COMP.sym # of pins=5
+** sym_path: /home/tare/Desktop/Analog design/COMP.sym
+** sch_path: /home/tare/Desktop/Analog design/COMP.sch
+.subckt COMP OUTP VINP CLK VINN OUTN
+*.iopin VINP
+*.iopin VINN
+*.iopin CLK
+*.iopin OUTP
+*.iopin OUTN
+V1 VINNi VINN 0
+.save i(v1)
+V2 VINPi VINP 0
+.save i(v2)
+B1 net2 GND V = {VCC/2 + VCC/2*(tanh(v(VINPi,VINNi)*1e6))
+B2 net1 GND V = {VCC/2 + VCC/2*(tanh(v(VINPi,VINNi)*1e6*-1))
+x1 net2 CLK GND OUTP net3 GND DFF
+x2 net1 CLK GND OUTN net4 GND DFF
+**** begin user architecture code
+
+
+.param thershold = 0
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/bottom_plate.sym # of pins=9
+** sym_path: /home/tare/Desktop/Analog design/bottom_plate.sym
+** sch_path: /home/tare/Desktop/Analog design/bottom_plate.sch
+.subckt bottom_plate VBOT VREFP VREFN AGND AVDD VIN SMPL SMPL_B DB
+*.iopin SMPL
+*.iopin SMPL_B
+*.iopin DB
+*.iopin VREFN
+*.iopin VREFP
+*.iopin VBOT
+*.iopin AGND
+*.iopin AVDD
+*.iopin VIN
+XM1 VBOT net1 VREFN AGND nmos_3p3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 VREFP net2 VBOT AVDD pmos_3p3 L=0.28u W=4u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+x3 SMPL AGND VIN VBOT AVDD SMPL_B TG
+x1 SMPL_B net2 DB NAND TRF=100p
+x2 SMPL net1 DB NOR TRF=100p
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/DFF.sym # of pins=6
+** sym_path: /home/tare/Desktop/Analog design/DFF.sym
+** sch_path: /home/tare/Desktop/Analog design/DFF.sch
+.subckt DFF D CLK RESET Q Q_B SET
+*.iopin D
+*.iopin CLK
+*.iopin RESET
+*.iopin SET
+*.iopin Q
+*.iopin Q_B
+**** begin user architecture code
+
+
+a7 D CLK set reset Q Q_B flop1
+.model flop1 d_dff(clk_delay = 13.0e-9 set_delay = 25.0e-9  reset_delay = 27.0e-9 ic = 2 rise_delay
++ = 10.0e-9  fall_delay = 3e-9)
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/NAND.sym # of pins=3
+** sym_path: /home/tare/Desktop/Analog design/NAND.sym
+** sch_path: /home/tare/Desktop/Analog design/NAND.sch
+.subckt NAND SMPL_B VOUT DB  TRF=100p
+*.iopin DB
+*.iopin SMPL_B
+*.iopin VOUT
+C1 VOUT GND 10f m=1
+**** begin user architecture code
+
+
+a6 [DB SMPL_B] VOUT nand1
+.model nand1 d_nand(rise_delay = {TRF} fall_delay = {TRF}  input_load = 0.1e-12)
+
+
+**** end user architecture code
+.ends
+
+.GLOBAL GND
+.end

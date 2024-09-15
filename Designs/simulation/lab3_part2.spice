@@ -1,0 +1,79 @@
+** sch_path: /home/tare/Desktop/Analog design/lab3_part2.sch
+**.subckt lab3_part2
+E1 net1 GND VY GND 1
+S1 VSH net1 CLK2 GND SWITCH1
+C2 VSH GND 1p m=1
+V1 GND CLK2 pulse(0 {VDD} {0.5*TS} {TRF} {TRF} {TON} {TS})
+.save i(v1)
+V2 CLK1 GND pulse(0 {VDD} 0 {TRF} {TRF} {TON} {TS})
+.save i(v2)
+R1 VIN VSIG {RSIG} m=1
+V3 VSIG GND sin({VDC} {VPK} {FIN})
+.save i(v3)
+V4 VDD GND {VDD}
+.save i(v4)
+x1 CLK1 GND VIN VX VDD tag_new W_N=10u L_N=0.18u W_P=10u L_P=0.18u
+C3 GND VX {CP} m=1
+M2 VX CLK4 VCM VSS nmos w=10u l=0.18u m=1
+C1 VX VY {CH} m=1
+C4 GND VY {CP} m=1
+M1 VY CLK4 VCM VSS nmos w=10u l=0.18u m=1
+V5 CLK3 GND pulse(0 {VDD} 0 {TRF} {TRF} {0.9*TON} {TS})
+.save i(v5)
+V6 CLK4 GND pulse({VDD} 0 0 {TRF} {TRF} {1.1*TON} {TS})
+.save i(v6)
+V7 VCM GND {VCM}
+.save i(v7)
+**** begin user architecture code
+
+
+
+
+*These are the values of the parameters to be used
+.param TS=1u
+.param CH=1p CP={0.1*CH} RSIG=1k TON={0.4*TS} TRF=1n NCYC=5 NFFT=256 FIN={(NCYC/NFFT)/TS}
+.param VDD=2 VDC={VDD/2} VCM={VDD/2} VPK={VDD/4} TDROP={0.5/FIN} TSTOP={(NCYC/FIN)+TDROP}
+.param W_N=10u L_N=0.28u W_P=10u L_P=0.28u
+
+*Analysis setup and control statements
+.tran 25n {TSTOP} {TDROP}
+.options filetype=ascii
+*.options reltol=0.1u vntol=0.11u abstol=1p
+
+*Required model for the switch
+.model SWITCH1 sw vt={VDD/2}
+
+.model nmos nmos
+
+*save all voltages and currents
+.save all
+
+
+
+
+.include /home/tare/pdk/gf180mcuC/libs.tech/ngspice/design.ngspice
+.lib /home/tare/pdk/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/tag_new.sym # of pins=5
+** sym_path: /home/tare/Desktop/Analog design/tag_new.sym
+** sch_path: /home/tare/Desktop/Analog design/tag_new.sch
+.subckt tag_new C GND A B VDD  W_N=10u L_N=0.18u W_P=10u L_P=0.18u
+*.iopin B
+*.iopin GND
+*.iopin A
+*.iopin VDD
+*.iopin C
+E1 net1 VDD C GND -1
+XM3 B C A GND nmos_3p3_sab L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM1 B net1 A VDD pmos_3p3_sab L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+.GLOBAL GND
+.end

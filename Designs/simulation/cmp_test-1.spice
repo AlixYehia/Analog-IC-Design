@@ -1,0 +1,36 @@
+** sch_path: /home/tare/Desktop/Analog design/cmp_test-1.sch
+**.subckt cmp_test-1
+V1 VINN GND 1
+.save i(v1)
+V2 VINP GND pwl(0 0 10n VCC 20n 0 30n VCC)
+.save i(v2)
+x1 VOUTP VINP VOUTN VINN comp
+**** begin user architecture code
+
+
+.param VCC=2
+.tran 1n 30n
+.save all
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/comp.sym # of pins=4
+** sym_path: /home/tare/Desktop/Analog design/comp.sym
+** sch_path: /home/tare/Desktop/Analog design/comp.sch
+.subckt comp VOUTP VINP VOUTN VINN
+*.ipin VINP
+*.ipin VINN
+*.opin VOUTP
+*.opin VOUTN
+V1 VINNi VINN 0
+.save i(v1)
+V2 VINPi VINP 0
+.save i(v2)
+B1 VOUTP GND V = {VCC/2 + VCC/2*(tanh(V(VINPi,VINNi)*1e6))
+B2 VOUTN GND V = {VCC/2 + VCC/2*(tanh(V(VINPi,VINNi)*1e6*-1))
+.ends
+
+.GLOBAL GND
+.end

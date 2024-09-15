@@ -1,0 +1,163 @@
+** sch_path: /home/tare/Desktop/Analog design/lab2_part2.sch
+**.subckt lab2_part2
+x1 VM VP VDD VIN CLOCK net10 net9 net7 net8 net6 net5 net3 net4 net2 net1 ADC_10
+x2 VP VDD VOUT net5 net6 net2 net9 net4 net10 net8 net7 net3 net1 VM DAC_10
+V1 VDD GND 2
+.save i(v1)
+V2 VP GND 2
+.save i(v2)
+V3 VM GND 0
+.save i(v3)
+V4 CLOCK GND pulse(0 {VDD} 0 {TRF} {TRF} {TON} {TS})
+.save i(v4)
+V5 net11 GND sin({VDC} {VPK} {FIN})
+.save i(v5)
+R1 net11 VIN 1k m=1
+**** begin user architecture code
+
+
+*Required model for the switch
+.model SWITCH1 sw vt=0
+*These are the values of the parameters to be used
+.param TS=1u
+.param CH=1p CP={0.1*CH} RSIG=1k TON={0.4*TS} TRF=1n NCYC=5 NFFT=256 FIN={(NCYC/NFFT)/TS}
+.param VDD=2 VDC={VDD/2} VCM={VDD/2} VPK={VDD/4} TDROP={0.5/FIN} TSTOP={(NCYC/FIN)+TDROP}
+*Analysis setup and control statements
+
+.tran 25n {TSTOP} {TDROP}
+*save all voltages and currents
+.save all
+*options for an accurate precision output and to allow raw files to be ascii
+.options filetype=ascii
+.options reltol=1u vntol=1u abstol=1p
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/ADC_10.sym # of pins=15
+** sym_path: /home/tare/Desktop/Analog design/ADC_10.sym
+** sch_path: /home/tare/Desktop/Analog design/ADC_10.sch
+.subckt ADC_10 VREFN VREFP VDD VIN CLK B0 B1 B3 B2 B4 B5 B7 B6 B8 B9
+*.iopin B9
+*.iopin B8
+*.iopin B7
+*.iopin B6
+*.iopin B5
+*.iopin B4
+*.iopin B3
+*.iopin B2
+*.iopin B1
+*.iopin B0
+*.iopin VDD
+*.iopin VIN
+*.iopin CLK
+*.iopin VREFP
+*.iopin VREFN
+x1 CLK VTH VOUTSH1 VIN Ideal_S_H
+x2 VDD VREFN net2 VOUTSH2 B9 VREFP ADC_BIT
+x3 VDD VREFN net3 net2 B8 VREFP ADC_BIT
+x4 VDD VREFN net4 net3 B7 VREFP ADC_BIT
+x5 VDD VREFN net5 net4 B6 VREFP ADC_BIT
+x6 VDD VREFN net6 net5 B5 VREFP ADC_BIT
+x7 VDD VREFN net7 net6 B4 VREFP ADC_BIT
+x8 VDD VREFN net8 net7 B3 VREFP ADC_BIT
+x9 VDD VREFN net9 net8 B2 VREFP ADC_BIT
+x10 VDD VREFN net10 net9 B1 VREFP ADC_BIT
+x11 VDD VREFN net1 net10 B0 VREFP ADC_BIT
+B2 VOUTSH2 GND v=v(VOUTSH1)-(v(VREFP)-v(VREFN))/2048
+R3 VDD VTH 1000k m=1
+R4 VTH GND 1000k m=1
+.ends
+
+
+* expanding   symbol:  /home/tare/Desktop/Analog design/DAC_10.sym # of pins=14
+** sym_path: /home/tare/Desktop/Analog design/DAC_10.sym
+** sch_path: /home/tare/Desktop/Analog design/DAC_10.sch
+.subckt DAC_10 VREFP VDD AOUT B5 B4 B8 B1 B6 B0 B2 B3 B7 B9 VREFN
+*.iopin VDD
+*.iopin B9
+*.iopin B8
+*.iopin B7
+*.iopin B6
+*.iopin B5
+*.iopin B4
+*.iopin B3
+*.iopin B2
+*.iopin B1
+*.iopin B0
+*.iopin VREFP
+*.iopin VREFN
+*.iopin AOUT
+x1 VTH B9 BO9 Bitlogic
+x2 VTH B8 BO8 Bitlogic
+x3 VTH B7 BO7 Bitlogic
+x4 VTH B6 BO6 Bitlogic
+x5 VTH B5 BO5 Bitlogic
+x6 VTH B4 BO4 Bitlogic
+x7 VTH B3 BO3 Bitlogic
+x8 VTH B2 BO2 Bitlogic
+x9 VTH B1 BO1 Bitlogic
+x10 VTH B0 BO0 Bitlogic
+R1 VDD VTH 1000k m=1
+R2 VTH GND 1000k m=1
+B1 AOUT GND
++ v=(512*v(BO9)+256*v(BO8)+128*v(BO7)+64*v(BO6)+32*v(BO5)+16*v(BO4)+8*v(BO3)+4*v(BO2)+2*v(BO1)+v(BO0))*((v(VREFP)-v(VREFN))/1024)+v(VREFN)
+.ends
+
+
+* expanding   symbol:  Ideal_S_H.sym # of pins=4
+** sym_path: /home/tare/Desktop/Analog design/Ideal_S_H.sym
+** sch_path: /home/tare/Desktop/Analog design/Ideal_S_H.sch
+.subckt Ideal_S_H CLK VTH VOUT VIN
+*.iopin CLK
+*.iopin VTH
+*.iopin VIN
+*.iopin VOUT
+E1 net1 GND VIN GND 1
+E2 VOUT GND net3 GND 1
+C1 net2 GND 1e-12 m=1
+C2 net3 GND 1e-12 m=1
+S1 net3 net4 CLK VTH SWITCH1
+S2 net2 net1 VTH CLK SWITCH1
+E3 net4 GND net2 GND 1
+.ends
+
+
+* expanding   symbol:  ADC_BIT.sym # of pins=6
+** sym_path: /home/tare/Desktop/Analog design/ADC_BIT.sym
+** sch_path: /home/tare/Desktop/Analog design/ADC_BIT.sch
+.subckt ADC_BIT VDD VREFN VOUT VIN BITOUT VREFP
+*.iopin VIN
+*.iopin BITOUT
+*.iopin VOUT
+*.iopin VDD
+*.iopin VREFP
+*.iopin VREFN
+S1 BITOUT VDD VIN VMID SWITCH1
+S2 GND BITOUT VMID VIN SWITCH1
+E1 net1 VREFN VIN VMID 2
+E2 net2 VREFN VIN VREFN 2
+S3 VOUT net1 BITOUT VTH SWITCH1
+S4 net2 VOUT VTH BITOUT SWITCH1
+B1 VMID GND v=(v(VREFP)-v(VREFN))/2+v(VREFN)
+R3 VDD VTH 1000k m=1
+R4 VTH GND 1000k m=1
+.ends
+
+
+* expanding   symbol:  Bitlogic.sym # of pins=3
+** sym_path: /home/tare/Desktop/Analog design/Bitlogic.sym
+** sch_path: /home/tare/Desktop/Analog design/Bitlogic.sch
+.subckt Bitlogic VTH BX BXL
+*.iopin VTH
+*.iopin BXL
+*.iopin BX
+V1 net1 GND 1
+.save i(v1)
+S1 BXL net1 BX VTH SWITCH1
+S2 GND BXL VTH BX SWITCH1
+.ends
+
+.GLOBAL GND
+.end

@@ -1,0 +1,37 @@
+** sch_path: /home/tare/Desktop/Analog design/lab_02_tah_sah_tb.sch
+**.subckt lab_02_tah_sah_tb
+V1 VSIG GND sin({VDC} {VPK} {FIN})
+.save i(v1)
+R1 VIN VSIG 1k m=1
+V2 CLK1 GND pulse(0 {VDD} 0 {TRF} {TRF} {TON} {TS})
+.save i(v2)
+C1 VTH GND {CH} m=1
+S1 VTH VIN CLK1 GND SWITCH1
+S2 VSH net1 CLK2 GND SWITCH1
+V3 CLK2 GND pulse(0 {VDD} {0.5*TS} {TRF} {TRF} {TON} {TS})
+.save i(v3)
+C2 VSH GND {CH} m=1
+E1 net1 GND VTH GND 1
+**** begin user architecture code
+
+
+*Required model for the switch
+.model SWITCH1 sw vt={VDD/2}
+*These are the values of the parameters to be used
+.param TS=1u
+.param CH=1p CP={0.1*CH} RSIG=1k TON={0.4*TS} TRF=1n NCYC=5.5 NFFT=256 FIN={(NCYC/NFFT)/TS}
+.param VDD=2 VDC={VDD/2} VCM={VDD/2} VPK={VDD/4} TDROP={0.5/FIN} TSTOP={(NCYC/FIN)+TDROP}
+*Analysis setup and control statements
+
+.tran 25n {TSTOP} {TDROP}
+*save all voltages and currents
+.save all
+*options for an accurate precision output and to allow raw files to be ascii
+.options filetype=ascii
+.options reltol=1u vntol=1u abstol=1p
+
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end
